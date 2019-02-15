@@ -24,9 +24,6 @@
     // ignore trailing spaces
     "no-trailing-whitespace": true,
 
-    // no unused vars
-    "no-unused-variable": true,
-
     // organize imports
     "ordered-imports": true
   },

@@ -5,6 +5,7 @@ import HelloWorldRouter from './routers/HelloWorldRouter';
 
 class API extends AppDevAPI {
   getPath(): string {
+    const unusedVariable = "hello world"
     return '/api/';
   }
 
