@@ -1,14 +1,12 @@
-// @flow
 
-import http from 'http'
+import http from 'http';
 import express, { Application, Router, Request, Response, NextFunction } from 'express';
-import AppDevUtilities from './AppDevUtilities';
 
 /**
  * ExpressHandlerFunction - the function signature of callbacks for Express
  * Router objects
  */
-export type ExpressCallback = (Request, Response, NextFunction) => any;
+export type ExpressCallback = (req: Request, res: Response, next: NextFunction) => any;
 
 /**
  * AppDevAPI - create an Express Application object from a series of middleware
@@ -35,9 +33,8 @@ class AppDevAPI {
    * and routers provided by the subclass.
    */
   init() {
-    AppDevUtilities.tryCheckAppDevURL(this.getPath());
-    let middleware = this.middleware();
-    let routers = this.routers();
+    const middleware = this.middleware();
+    const routers = this.routers();
 
     for (let i = 0; i < middleware.length; i++) {
       this.express.use(middleware[i]);
@@ -73,16 +70,14 @@ class AppDevAPI {
   /**
    * Get an HTTP server backed by the Express Application
    */
-  getServer(verbose: ?boolean = true): http.Server {
+  getServer(verbose = true): http.Server {
     const server: http.Server = http.createServer(this.express);
     const onError = (err: Error): void => {
       console.log(err);
     };
 
     const onListening = (): void => {
-      let address = server.address().address;
-      let port = server.address().port;
-      verbose && console.log(`Listening on ${address}:${port}`);
+      verbose && console.log('Listening');
     };
 
     server.on('error', onError);

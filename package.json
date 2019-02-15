@@ -1,10 +1,11 @@
 {
-  "name": "appdev",
+  "name": "acai-backend",
   "version": "1.0.0",
-  "description": "AppDev Core JavaScript Modules",
+  "description": "Backend for Acai-iOS codebase",
   "main": "build/bundle.js",
   "scripts": {
-    "build": "webpack -p",
+    "start": "node build/server.js",
+    "build": "node_modules/.bin/tsc",
     "flow": "node_modules/.bin/flow",
     "flow-stop": "node_modules/.bin/flow stop",
     "prepare": "webpack -p",
@@ -28,17 +29,22 @@
     "flow-bin": "^0.67.1",
     "jest": "^23.6.0",
     "supertest": "^3.3.0",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3",
     "webpack": "^4.22.0",
     "webpack-cli": "^3.1.2",
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "aws-sdk": "^2.340.0",
+    "@types/body-parser": "^1.17.0",
+    "@types/express": "^4.16.1",
+    "@types/node": "^11.9.4",
     "babel-runtime": "^6.26.0",
     "express": "^4.16.4",
     "http": "0.0.0",
     "moment": "^2.22.2",
     "parquetjs": "git+https://github.com/zeladada/parquetjs.git#f41c9d0f344b987a2881d619b30031976944381a",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "tslint-config-airbnb": "^5.11.1"
   }
 }
