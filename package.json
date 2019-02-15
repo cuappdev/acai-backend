@@ -42,6 +42,7 @@
     "babel-runtime": "^6.26.0",
     "express": "^4.16.4",
     "http": "0.0.0",
+    "merge": "^1.2.1",
     "moment": "^2.22.2",
     "parquetjs": "git+https://github.com/zeladada/parquetjs.git#f41c9d0f344b987a2881d619b30031976944381a",
     "request": "^2.88.0",
