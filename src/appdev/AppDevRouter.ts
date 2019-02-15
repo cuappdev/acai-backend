@@ -14,7 +14,7 @@ class AppDevResponse<T> {
   success: boolean;
   data: T;
 
-  constructor (success: boolean, data: T) {
+  constructor(success: boolean, data: T) {
     this.success = success;
     this.data = data;
   }
@@ -77,7 +77,7 @@ class AppDevRouter<T> {
    * Subclasses must override this response hook to generate response data
    * for the given request.
    */
-  async content (req: Request): Promise<T> {
+  async content(req: Request): Promise<T> {
     throw new Error();
   }
 

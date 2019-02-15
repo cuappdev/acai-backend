@@ -1,4 +1,4 @@
-import  { Request } from 'express';
+import { Request } from 'express';
 import AppDevRouter from '../appdev/AppDevRouter';
 
 class HelloWorldRouter extends AppDevRouter<Object> {

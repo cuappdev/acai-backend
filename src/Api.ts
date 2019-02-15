@@ -16,7 +16,7 @@ class API extends AppDevAPI {
   }
 
   routers(): [Router] {
-    return  [
+    return [
       HelloWorldRouter,
     ];
   }
