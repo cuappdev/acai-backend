@@ -1,0 +1,44 @@
+{
+  "name": "appdev",
+  "version": "1.0.0",
+  "description": "AppDev Core JavaScript Modules",
+  "main": "build/bundle.js",
+  "scripts": {
+    "build": "webpack -p",
+    "flow": "node_modules/.bin/flow",
+    "flow-stop": "node_modules/.bin/flow stop",
+    "prepare": "webpack -p",
+    "test": "npm run build && node ./node_modules/.bin/jest --verbose --forceExit --detectOpenHandles test ; echo 'Exiting.'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cuappdev/appdev.js.git"
+  },
+  "keywords": [],
+  "author": "Cornell AppDev",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
+    "body-parser": "^1.18.3",
+    "create-file-webpack": "^1.0.0",
+    "flow-bin": "^0.67.1",
+    "jest": "^23.6.0",
+    "supertest": "^3.3.0",
+    "webpack": "^4.22.0",
+    "webpack-cli": "^3.1.2",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.340.0",
+    "babel-runtime": "^6.26.0",
+    "express": "^4.16.4",
+    "http": "0.0.0",
+    "moment": "^2.22.2",
+    "parquetjs": "git+https://github.com/zeladada/parquetjs.git#f41c9d0f344b987a2881d619b30031976944381a",
+    "request": "^2.88.0"
+  }
+}
