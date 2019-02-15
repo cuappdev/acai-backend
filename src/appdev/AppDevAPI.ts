@@ -1,6 +1,5 @@
-
+import express, { Application, NextFunction, Request, Response, Router } from 'express';
 import http from 'http';
-import express, { Application, Router, Request, Response, NextFunction } from 'express';
 
 /**
  * ExpressHandlerFunction - the function signature of callbacks for Express

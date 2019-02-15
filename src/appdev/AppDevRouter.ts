@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 
 /**
  * RequestType - the HTTP methods supported by AppDevRouter
