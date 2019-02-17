@@ -1,3 +1,0 @@
-[ignore]
-.*node_modules/webpack-cli/\.nyc_output/.*json
-.*.test.js
