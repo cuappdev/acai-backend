@@ -4,7 +4,7 @@
   "description": "Backend for Acai-iOS codebase",
   "main": "build/bundle.js",
   "scripts": {
-    "start": "node build/server.js",
+    "start": "npm run build && node build/server.js",
     "build": "node_modules/.bin/tsc",
     "flow": "node_modules/.bin/flow",
     "flow-stop": "node_modules/.bin/flow stop",
