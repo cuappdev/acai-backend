@@ -14,10 +14,12 @@ class API extends ApplicationAPI {
     ];
   }
 
-  routers(): [Router] {
-    return [
-      HelloWorldRouter,
-    ];
+  routerGroups(): { [index: string]: [Router] } {
+    return {
+      v1: [
+        HelloWorldRouter,
+      ],
+    };
   }
 }
 
