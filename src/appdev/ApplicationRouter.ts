@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 
 /**
- * RequestType - the HTTP methods supported by AppDevRouter
+ * RequestType - the HTTP methods supported by ApplicationRouter
  */
 export type RequestType = 'GET' | 'POST' | 'DELETE';
 
@@ -21,13 +21,13 @@ class AppDevResponse<T> {
 }
 
 /**
- * AppDevRouter - cleanly create an Express Router object using inheritance
+ * ApplicationRouter - cleanly create an Express Router object using inheritance
  *
  * Subclasses can simply specify the HTTP method, the path, and a response
  * hook to compute response data. This pattern is cleaner than raw Express
  * Router initialization with callbacks.
  */
-class AppDevRouter<T> {
+class ApplicationRouter<T> {
   router: any;
   requestType: RequestType;
 
@@ -103,4 +103,4 @@ class AppDevRouter<T> {
 
 }
 
-export default AppDevRouter;
+export default ApplicationRouter;

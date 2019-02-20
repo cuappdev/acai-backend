@@ -8,14 +8,14 @@ import http from 'http';
 export type ExpressCallback = (req: Request, res: Response, next: NextFunction) => any;
 
 /**
- * AppDevAPI - create an Express Application object from a series of middleware
+ * ApplicationAPI - create an Express Application object from a series of middleware
  * and routers
  *
  * Subclasses can specify the middleware and routers required for implementing
  * the backend's API. This pattern is cleaner than than raw Express Application
  * initialization with middleware functions and routers.
  */
-class AppDevAPI {
+class ApplicationAPI {
 
   express: Application;
 
@@ -86,4 +86,4 @@ class AppDevAPI {
 
 }
 
-export default AppDevAPI;
+export default ApplicationAPI;

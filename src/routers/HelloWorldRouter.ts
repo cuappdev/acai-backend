@@ -1,7 +1,7 @@
 import { Request } from 'express';
-import AppDevRouter from '../appdev/AppDevRouter';
+import ApplicationRouter from '../appdev/ApplicationRouter';
 
-class HelloWorldRouter extends AppDevRouter<Object> {
+class HelloWorldRouter extends ApplicationRouter<Object> {
   constructor() {
     super('GET');
   }

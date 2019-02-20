@@ -1,9 +1,9 @@
 import bodyParser from 'body-parser';
 import { Router } from 'express';
-import AppDevAPI from './appdev/AppDevAPI';
+import ApplicationAPI from './appdev/ApplicationAPI';
 import HelloWorldRouter from './routers/HelloWorldRouter';
 
-class API extends AppDevAPI {
+class API extends ApplicationAPI {
   getPath(): string {
     return '/api/';
   }
