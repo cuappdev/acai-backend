@@ -18,7 +18,7 @@
   "devDependencies": {
     "body-parser": "^1.18.3",
     "create-file-webpack": "^1.0.0",
-    "jest": "^23.6.0",
+    "jest": "^24.1.0",
     "supertest": "^3.3.0",
     "tslint": "^5.12.1",
     "typescript": "^3.3.3",
@@ -33,8 +33,6 @@
     "express": "^4.16.4",
     "http": "0.0.0",
     "merge": "^1.2.1",
-    "moment": "^2.22.2",
-    "parquetjs": "git+https://github.com/zeladada/parquetjs.git#f41c9d0f344b987a2881d619b30031976944381a",
     "request": "^2.88.0",
     "tslint-config-airbnb": "^5.11.1"
   }
