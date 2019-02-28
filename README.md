@@ -23,5 +23,12 @@ After opening the project in your IDE, you can run it using
 npm start run
 ```
 
+### Environment Variables:
+It is recommended to use [`autoenv`](https://github.com/kennethreitz/autoenv). The required environment variables for this API are the following:
+````bash
+export PORT=8000
+export ACCESS_TOKEN=FILL IN
+````
+
 ## Configuration (optional)
 We recommend using TSLint (deprecrated) for linting. If you are using VSCode, it can be downloaded directly through the Extensions panel. 

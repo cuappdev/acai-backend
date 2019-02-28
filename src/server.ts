@@ -9,7 +9,7 @@ const SERVER_ADDRESS: string = '0.0.0.0';
  */
 app.express.listen(PORT, () => {
   console.log(
-    `App is running ${SERVER_ADDRESS}:${PORT}...`,
+    `App is running on ${SERVER_ADDRESS}:${PORT}...`,
   );
   console.log('Press CTRL-C to stop\n');
 });
