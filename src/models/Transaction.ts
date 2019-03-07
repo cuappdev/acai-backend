@@ -12,10 +12,10 @@ class Transaction {
   orderID: string;
 
   @Column()
-  transactionAmount: number;
+  status: string;
 
   @Column()
-  status: string;
+  transactionAmount: number;
 }
 
 export default Transaction;
