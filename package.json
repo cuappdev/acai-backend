@@ -4,10 +4,11 @@
   "description": "Backend for Acai-iOS codebase",
   "main": "build/bundle.js",
   "scripts": {
-    "start": "ts-node src/server.ts",
-    "sandbox": "ts-node src/index.ts",
+    "start:prod": "node_modules/.bin/ts-node src/server.ts",
+    "start:dev": "node_modules/.bin/ts-node-dev src/server.ts",
+    "sandbox": "node_modules/.bin/ts-node src/index.ts",
     "build": "node_modules/.bin/tsc",
-    "test": "ts-node ./node_modules/.bin/jest --verbose --forceExit --detectOpenHandles test ; echo 'Exiting.'"
+    "test": "node_modules/.bin/ts-node ./node_modules/.bin/jest --verbose --forceExit --detectOpenHandles test ; echo 'Exiting.'"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
     "create-file-webpack": "^1.0.0",
     "jest": "^24.1.0",
     "supertest": "^3.3.0",
+    "ts-node-dev": "^1.0.0-pre.32",
     "tslint": "^5.12.1",
     "tslint-config-airbnb": "^5.11.1",
     "webpack": "^4.22.0",
