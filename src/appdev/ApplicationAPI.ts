@@ -65,7 +65,7 @@ class ApplicationAPI {
   /**
      * Subclasses must override this to supply middleware for the API.
      */
-  routerGroups(): { [index: string]: [Router] } {
+  routerGroups(): { [index: string]: Router[] } {
     return {};
   }
 

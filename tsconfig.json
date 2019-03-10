@@ -6,7 +6,7 @@
     "outDir": "build",
     "strict": true,
     "strictNullChecks": false,
-    "noUnusedLocals": true,
+    // "noUnusedLocals": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "experimentalDecorators": true,

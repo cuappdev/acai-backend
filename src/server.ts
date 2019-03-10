@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
-import Api from './Api';
+import API from './API';
 
-const app = new Api();
+const app = new API();
 const server = app.getServer(false);
 const PORT: number = +process.env.PORT || 5000;
 const SERVER_ADDRESS: string = '0.0.0.0';
