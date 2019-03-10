@@ -1,18 +1,24 @@
 import { Column, Entity } from 'typeorm';
 import Base from './Base';
 
-@Entity()
+@Entity('users')
 class User extends Base {
-  @Column({ type: 'text', unique: true })
+  @Column({ unique: true })
+  customerId: string;
+
+  @Column({ unique: true })
   email: string;
 
-  @Column({ type: 'text' })
+  @Column()
   firstName: string;
 
-  @Column({ type: 'text' })
+  @Column()
   lastName: string;
 
-  @Column({ type: 'text', unique: true })
+  @Column()
+  passwordHash: string;
+
+  @Column({ unique: true })
   phoneNumber: string;
 }
 

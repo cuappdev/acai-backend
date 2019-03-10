@@ -1,16 +1,19 @@
 import { Column, Entity } from 'typeorm';
 import Base from './Base';
 
-@Entity()
+@Entity('transactions')
 class Transaction extends Base {
-  @Column({ type: 'text', unique: true })
+  @Column({ unique: true })
+  customerId: string;
+
+  @Column({ unique: true })
   orderID: string;
 
-  @Column({ type: 'text' })
+  @Column()
   status: string;
 
   @Column({ type: 'numeric', precision: 5, scale: 2 })
-  transactionAmount: number;
+  total: number;
 }
 
 export default Transaction;

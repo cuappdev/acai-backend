@@ -1,12 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 abstract class Base {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ type: 'text', unique: true })
-  customerId: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 }
 
 export default Base;
