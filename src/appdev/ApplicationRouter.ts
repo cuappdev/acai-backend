@@ -78,7 +78,7 @@ class ApplicationRouter<T> {
    * for the given request.
    */
   async content(req: Request): Promise<T> {
-    throw new Error();
+    throw new Error(null);
   }
 
   /**
@@ -91,7 +91,7 @@ class ApplicationRouter<T> {
         const content = await this.content(req);
         res.json(new AppDevResponse(true, content));
       } catch (e) {
-        if (e.message === 1) {
+        if (e.message === null) {
           throw new Error('You must implement content()!');
         } else {
           res.json(new AppDevResponse(false, { errors: [e.message] }));
