@@ -1,5 +1,5 @@
 import { getConnectionManager, Repository } from 'typeorm';
-import Transaction from '../entities/Transaction';
+import Transaction, { SerializedTransaction } from '../entities/Transaction';
 
 const db = (): Repository<Transaction> => getConnectionManager().get().getRepository(Transaction);
 

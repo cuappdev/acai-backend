@@ -27,7 +27,7 @@ const createUser = async (fields: CreateUserFields): Promise<SerializedUser> => 
 
 const getUserById = async (id: string): Promise<SerializedUser> => {
   try {
-    return (await db().findOne({id})).serialize();
+    return (await db().findOne({ id })).serialize();
   } catch (e) {
     throw Error('Unable to find user');
   }
