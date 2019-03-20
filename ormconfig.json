@@ -1,11 +1,4 @@
 {
-   "type": "postgres",
-   "host": "localhost",
-   "port": 5432,
-   "username": "postgres",
-   "password": "postgres",
-   "database": "acai",
-   "synchronize": true,
    "logging": false,
    "entities": [
       "src/entities/**/*.ts"
