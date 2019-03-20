@@ -2,6 +2,8 @@ import bodyParser from 'body-parser';
 import { Router } from 'express';
 import ApplicationAPI from './appdev/ApplicationAPI';
 import HelloWorldRouter from './routers/HelloWorldRouter';
+import LoginRouter from './routers/LoginRouter';
+import RegisterRouter from './routers/RegisterRouter';
 import TestRouter from './routers/TestRouter';
 
 class API extends ApplicationAPI {
@@ -19,6 +21,8 @@ class API extends ApplicationAPI {
     return {
       v1: [
         HelloWorldRouter,
+        LoginRouter,
+        RegisterRouter,
         TestRouter,
       ],
     };
