@@ -14,7 +14,7 @@ class LoginRouter extends ApplicationRouter<Object> {
 
   async content(req: Request): Promise<Object> {
     const { email, password } = req.body;
-    return UsersRepo.authUser(email, password);
+    return await UsersRepo.authUser(email, password);
   }
 }
 
