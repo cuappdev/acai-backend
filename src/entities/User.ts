@@ -2,6 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import Base, { SerializedBase } from './Base';
 
 export type SerializedUser = SerializedBase & {
+  customerId: string,
   email: string,
   firstName: string,
   lastName: string,
@@ -31,6 +32,7 @@ class User extends Base {
   serialize(): SerializedUser {
     return {
       ...super.serialize(),
+      customerId: this.customerId,
       email: this.email,
       firstName: this.firstName,
       lastName: this.lastName,

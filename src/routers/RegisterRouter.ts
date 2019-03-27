@@ -7,7 +7,7 @@ import squareConnect from 'square-connect';
 import ApplicationRouter from '../appdev/ApplicationRouter';
 import UsersRepo from '../repos/UsersRepo';
 
-const customersApi = new squareConnect.CustomersApi();
+const customersAPI = new squareConnect.CustomersApi();
 const defaultClient = squareConnect.ApiClient.instance;
 const oauth2 = defaultClient.authentications['oauth2'];
 oauth2.accessToken = process.env.ACCESS_TOKEN;
@@ -28,14 +28,13 @@ class RegisterRouter extends ApplicationRouter<Object> {
       if (parsedPhoneNumber.isValid() && validate(email)) {
         const formattedPhoneNumber = parsedPhoneNumber.formatNational();
         try {
-          const customerBody = {
+          const customer = await customersAPI.createCustomer({
             idempotency_key: randomBytes(12).toString('hex'),
             email_address: email,
             family_name: lastName,
             given_name: firstName,
             phone_number: formattedPhoneNumber,
-          };
-          const customer = await customersApi.createCustomer(customerBody);
+          });
           const user = await UsersRepo.createUser({
             email,
             password,
@@ -44,7 +43,7 @@ class RegisterRouter extends ApplicationRouter<Object> {
             phoneNumber: formattedPhoneNumber,
             customerId: customer.customer.id,
           });
-          return await UsersRepo.getUserById(user.id);
+          return UsersRepo.getUserById(user.id);
         } catch (err) {
           throw Error('Unable to create user');
         }
