@@ -1,20 +1,15 @@
-import { Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-
-export type SerializedBase = {
-  id: string,
-  createdAt: string,
-  updatedAt: string,
-};
+import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { SerializedBase } from '../common/types';
 
 abstract class Base {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  createdAt: string;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt: string;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   serialize(): SerializedBase {
     return {

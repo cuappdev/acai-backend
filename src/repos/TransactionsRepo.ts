@@ -1,5 +1,5 @@
 import { getConnectionManager, Repository } from 'typeorm';
-import Transaction, { SerializedTransaction } from '../entities/Transaction';
+import Transaction from '../entities/Transaction';
 
 const db = (): Repository<Transaction> => getConnectionManager().get().getRepository(Transaction);
 
@@ -9,13 +9,11 @@ type CreateTransactionFields = {
   total: number,
 };
 
-const createTransaction = async (
-  fields: CreateTransactionFields,
-): Promise<SerializedTransaction> => {
+const createTransaction = async (fields: CreateTransactionFields): Promise<Transaction> => {
   try {
     const transaction = db().create(fields);
     await db().save(transaction);
-    return transaction.serialize();
+    return transaction;
   } catch (e) {
     throw new Error('Unable to create transaction');
   }

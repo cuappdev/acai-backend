@@ -3,8 +3,9 @@ import { Router } from 'express';
 import ApplicationAPI from './appdev/ApplicationAPI';
 import HelloWorldRouter from './routers/HelloWorldRouter';
 import LoginRouter from './routers/LoginRouter';
+import RefreshRouter from './routers/RefreshRouter';
 import RegisterRouter from './routers/RegisterRouter';
-import TestRouter from './routers/TestRouter';
+import SessionRouter from './routers/SessionRouter';
 
 class API extends ApplicationAPI {
   getPath(): string {
@@ -22,8 +23,9 @@ class API extends ApplicationAPI {
       v1: [
         HelloWorldRouter,
         LoginRouter,
+        RefreshRouter,
         RegisterRouter,
-        TestRouter,
+        SessionRouter,
       ],
     };
   }

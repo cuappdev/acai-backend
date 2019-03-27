@@ -1,18 +1,10 @@
-import { randomBytes } from 'crypto';
-import { validate } from 'email-validator';
-import { Request, Response } from 'express';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
-import squareConnect from 'square-connect';
+import { Request } from 'express';
 
 import ApplicationRouter from '../appdev/ApplicationRouter';
+import { SerializedUser } from '../common/types';
 import UsersRepo from '../repos/UsersRepo';
 
-const customersAPI = new squareConnect.CustomersApi();
-const defaultClient = squareConnect.ApiClient.instance;
-const oauth2 = defaultClient.authentications['oauth2'];
-oauth2.accessToken = process.env.ACCESS_TOKEN;
-
-class RegisterRouter extends ApplicationRouter<Object> {
+class RegisterRouter extends ApplicationRouter<SerializedUser> {
   constructor() {
     super('POST');
   }
@@ -21,36 +13,15 @@ class RegisterRouter extends ApplicationRouter<Object> {
     return '/register/';
   }
 
-  async content(req: Request): Promise<Object> {
+  async content(req: Request): Promise<SerializedUser> {
     const { email, password, firstName, lastName, phoneNumber } = req.body;
-    if (email && password && firstName && lastName && phoneNumber) {
-      const parsedPhoneNumber = parsePhoneNumberFromString(phoneNumber, 'US');
-      if (parsedPhoneNumber.isValid() && validate(email)) {
-        const formattedPhoneNumber = parsedPhoneNumber.formatNational();
-        try {
-          const customer = await customersAPI.createCustomer({
-            idempotency_key: randomBytes(12).toString('hex'),
-            email_address: email,
-            family_name: lastName,
-            given_name: firstName,
-            phone_number: formattedPhoneNumber,
-          });
-          const user = await UsersRepo.createUser({
-            email,
-            password,
-            firstName,
-            lastName,
-            phoneNumber: formattedPhoneNumber,
-            customerId: customer.customer.id,
-          });
-          return UsersRepo.getUserById(user.id);
-        } catch (err) {
-          throw Error('Unable to create user');
-        }
-      }
-      throw Error('Invalid phone number or email');
-    }
-    throw Error('Missing required field');
+    return (await UsersRepo.createUser({
+      email,
+      password,
+      firstName,
+      lastName,
+      phoneNumber,
+    })).serialize();
   }
 }
 
