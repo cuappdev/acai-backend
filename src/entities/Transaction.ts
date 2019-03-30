@@ -1,16 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import Base, { SerializedBase } from './Base';
+import { Column, Entity } from 'typeorm';
+import { SerializedBase, SerializedTransaction } from '../common/types';
+import Base from './Base';
 
 export enum TransactionStatus {
   RECEIVED = 'received',
   IN_PROGRESS = 'in_progress',
   COMPLETED = 'completed',
 }
-
-export type SerializedTransaction = SerializedBase & {
-  status: string,
-  total: number,
-};
 
 @Entity('transactions')
 class Transaction extends Base {

@@ -1,11 +1,20 @@
-import { createHash } from 'crypto';
+import { validate } from 'email-validator';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import moment from 'moment';
+import squareConnect from 'square-connect';
 import { getConnectionManager, Repository } from 'typeorm';
-import User, { SerializedUser } from '../entities/User';
+
+import { Session } from '../common/types';
+import utils from '../common/utils';
+import User from '../entities/User';
 
 const db = (): Repository<User> => getConnectionManager().get().getRepository(User);
+const customersAPI = new squareConnect.CustomersApi();
+const defaultClient = squareConnect.ApiClient.instance;
+const oauth2 = defaultClient.authentications['oauth2'];
+oauth2.accessToken = process.env.ACCESS_TOKEN;
 
 type CreateUserFields = {
-  customerId: string,
   email: string,
   password: string,
   firstName: string,
@@ -13,38 +22,87 @@ type CreateUserFields = {
   phoneNumber: string,
 };
 
-const createUser = async (fields: CreateUserFields): Promise<SerializedUser> => {
+const createUser = async (fields: CreateUserFields): Promise<User> => {
   try {
-    const { password, ...rest } = fields;
-    const passwordHash = createHash('sha256').update(password).digest('hex');
-    const user = db().create({ ...rest, passwordHash });
+    const { email, password, firstName, lastName } = fields;
+    const parsedPhoneNumber = parsePhoneNumberFromString(fields.phoneNumber, 'US');
+    if (!(email && password && firstName && lastName
+          && parsedPhoneNumber.isValid() && validate(email))) {
+      throw Error();
+    }
+    const phoneNumber = parsedPhoneNumber.formatNational();
+    const customer = await customersAPI.createCustomer({
+      idempotency_key: utils.generateToken(),
+      email_address: email,
+      family_name: lastName,
+      given_name: firstName,
+      phone_number: phoneNumber,
+    });
+    const user = db().create({
+      email,
+      firstName,
+      lastName,
+      phoneNumber,
+      customerId: customer.customer.id,
+      passwordHash: utils.generateHash(password),
+      ...utils.createSession(),
+    });
     await db().save(user);
-    return user.serialize();
+    return user;
   } catch (e) {
     throw Error('Unable to create user');
   }
 };
 
-const getUserById = async (id: string): Promise<SerializedUser> => {
+const getUserById = async (id: string): Promise<User> => {
   try {
-    return (await db().findOne({ id })).serialize();
+    return db().findOne({ id });
   } catch (e) {
     throw Error('Unable to find user');
   }
 };
 
-const authUser = async (email: string, password: string): Promise<SerializedUser> => {
+const getUserByCredentials = async (email: string, password: string): Promise<User> => {
   try {
-    const passwordHash = createHash('sha256').update(password).digest('hex');
-    const user = await db().findOne({ email, passwordHash });
-    return user.serialize();
+    return db().findOne({
+      email,
+      passwordHash: utils.generateHash(password),
+    });
   } catch (e) {
-    throw Error('Could not authenticate user');
+    throw Error('Unable to authenticate user');
+  }
+};
+
+const getUserBySessionToken = async (sessionToken: string): Promise<User> => {
+  try {
+    const user = await db().findOne({ sessionToken });
+    if (moment(user.sessionExpiration) <= moment()) {
+      throw Error();
+    }
+    return user;
+  } catch (e) {
+    throw Error('Unable to authenticate session');
+  }
+};
+
+const refreshSession = async (refreshToken: string): Promise<Session> => {
+  try {
+    const session = utils.createSession();
+    const user = {
+      ...await db().findOne({ refreshToken }),
+      ...session,
+    };
+    await db().save(user);
+    return session;
+  } catch (e) {
+    throw Error('Unable to refresh session');
   }
 };
 
 export default {
   createUser,
   getUserById,
-  authUser,
+  getUserByCredentials,
+  getUserBySessionToken,
+  refreshSession,
 };

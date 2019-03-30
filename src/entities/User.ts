@@ -1,13 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import Base, { SerializedBase } from './Base';
-
-export type SerializedUser = SerializedBase & {
-  customerId: string,
-  email: string,
-  firstName: string,
-  lastName: string,
-  phoneNumber: string,
-};
+import { Column, Entity } from 'typeorm';
+import { SerializedUser } from '../common/types';
+import Base from './Base';
 
 @Entity('users')
 class User extends Base {
@@ -29,6 +22,15 @@ class User extends Base {
   @Column({ unique: true })
   phoneNumber: string;
 
+  @Column()
+  sessionToken: string;
+
+  @Column()
+  sessionExpiration: Date;
+
+  @Column()
+  refreshToken: string;
+
   serialize(): SerializedUser {
     return {
       ...super.serialize(),
@@ -37,6 +39,11 @@ class User extends Base {
       firstName: this.firstName,
       lastName: this.lastName,
       phoneNumber: this.phoneNumber,
+      session: {
+        sessionToken: this.sessionToken,
+        sessionExpiration: this.sessionExpiration,
+        refreshToken: this.refreshToken,
+      },
     };
   }
 }

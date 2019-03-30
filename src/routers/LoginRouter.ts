@@ -1,9 +1,10 @@
-import { Request, Response } from 'express';
+import { Request } from 'express';
 
 import ApplicationRouter from '../appdev/ApplicationRouter';
+import { SerializedUser } from '../common/types';
 import UsersRepo from '../repos/UsersRepo';
 
-class LoginRouter extends ApplicationRouter<Object> {
+class LoginRouter extends ApplicationRouter<SerializedUser> {
   constructor() {
     super('POST');
   }
@@ -12,9 +13,14 @@ class LoginRouter extends ApplicationRouter<Object> {
     return '/login/';
   }
 
-  async content(req: Request): Promise<Object> {
+  async content(req: Request): Promise<SerializedUser> {
     const { email, password } = req.body;
-    return UsersRepo.authUser(email, password);
+    const user = await UsersRepo.getUserByCredentials(email, password);
+    const session = await UsersRepo.refreshSession(user.refreshToken);
+    return {
+      ...user.serialize(),
+      session,
+    };
   }
 }
 
