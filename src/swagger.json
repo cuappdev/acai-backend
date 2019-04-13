@@ -1,0 +1,307 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Welcome to the acai-backend API docs!",
+    "version": "1.0.0",
+    "title": "acai-backend"
+  },
+  "host": "acai-dev.cornellappdev.com",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "user",
+      "description": "User operations"
+    },
+    {
+      "name": "menu",
+      "description": "Menu operations"
+    },
+    {
+      "name": "order",
+      "description": "Order operations"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Register user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{success: true}"
+          }
+        }
+      }
+    },
+    "/menu": {
+      "get": {
+        "tags": [
+          "menu"
+        ],
+        "summary": "Get menu",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Get menu object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Menu"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{success: true}"
+          }
+        }
+      }
+    },
+    "/orderHistory": {
+      "get": {
+        "tags": [
+          "order"
+        ],
+        "summary": "Get order history",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Get order history",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrderHistory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{success: true}"
+          }
+        }
+      }
+    },
+    "/placeOrder": {
+      "post": {
+        "tags": [
+          "order"
+        ],
+        "summary": "Place order",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Place order",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{success: true}"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "customerId": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "session": {
+          "type": "object",
+          "properties": {
+            "sessionToken": {
+              "type": "string"
+            },
+            "sessionExpiration": {
+              "type": "string"
+            },
+            "refreshToken": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "Menu": {
+      "type": "object",
+      "properties": {
+        "bowls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "price": {
+                "type": "string"
+              },
+              "imageURL": {
+                "type": "string"
+              },
+              "ingredients": {
+                "type": "string"
+              },
+              "defaultOrderCustomizations": {
+                "type": "object",
+                "properties": {
+                  "toppings": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "priceAddition": {
+                          "type": "string"
+                        },
+                        "isSelected": {
+                          "type": "boolean"
+                        },
+                        "imageURL": {
+                          "type": "string",
+                          "required": false
+                        }
+                      }
+                    }
+                  },
+                  "sizes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "priceAddition": {
+                          "type": "string"
+                        },
+                        "isSelected": {
+                          "type": "boolean"
+                        },
+                        "imageURL": {
+                          "type": "string",
+                          "required": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "OrderLineItem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "string"
+        },
+        "totalMoney": {
+          "type": "integer"
+        }
+      }
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string"
+        },
+        "orderItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderLineItem"
+          }
+        },
+        "finalPrice": {
+          "type": "integer"
+        },
+        "currentStatus": {
+          "type": "string"
+        }
+      }
+    },
+    "OrderHistory": {
+      "type": "object",
+      "properties": {
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Order"
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about acai-backend",
+    "url": "https://github.com/cuappdev/acai-backend"
+  }
+}

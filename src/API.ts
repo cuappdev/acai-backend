@@ -1,7 +1,7 @@
 import bodyParser from 'body-parser';
 import { Router } from 'express';
 import ApplicationAPI from './appdev/ApplicationAPI';
-import HelloWorldRouter from './routers/HelloWorldRouter';
+import DocsRouter from './routers/DocsRouter';
 import LoginRouter from './routers/LoginRouter';
 import RefreshRouter from './routers/RefreshRouter';
 import RegisterRouter from './routers/RegisterRouter';
@@ -20,8 +20,8 @@ class API extends ApplicationAPI {
 
   routerGroups(): { [index: string]: Router[] } {
     return {
+      docs: [DocsRouter],
       v1: [
-        HelloWorldRouter,
         LoginRouter,
         RefreshRouter,
         RegisterRouter,
