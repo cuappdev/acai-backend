@@ -34,7 +34,7 @@ const fetchCatalog = async (): Promise<ListCatalogResponse> => {
   } catch (e) {
     throw Error('Unable to fetch catalog');
   }
-}
+};
 
 export default {
   createCustomer,
