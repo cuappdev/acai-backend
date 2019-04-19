@@ -6,6 +6,7 @@ import {
 } from 'square-connect-ts';
 import utils from '../common/utils';
 
+const catalogAPI = new squareConnect.CatalogApi();
 const customersAPI = new squareConnect.CustomersApi();
 const ordersAPI = new squareConnect.OrdersApi();
 
@@ -33,6 +34,15 @@ const createCustomer = async (
   }
 };
 
+const fetchCatalog = async (): Promise<ListCatalogResponse> => {
+  try {
+    const request = squareConnect.ListCatalogRequest();
+    return catalogAPI.listCatalog(request);
+  } catch (e) {
+    throw Error('Unable to fetch catalog');
+  }
+};
+
 const fetchOrders = async (orderIDs: string[]): Promise<BatchRetrieveOrdersResponse> => {
   try {
     const body = new squareConnect.BatchRetrieveOrdersRequest();
@@ -45,5 +55,6 @@ const fetchOrders = async (orderIDs: string[]): Promise<BatchRetrieveOrdersRespo
 
 export default {
   createCustomer,
+  fetchCatalog,
   fetchOrders,
 };
