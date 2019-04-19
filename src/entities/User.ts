@@ -1,11 +1,12 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { SerializedUser } from '../common/types';
 import Base from './Base';
+import Transaction from './Transaction';
 
 @Entity('users')
 class User extends Base {
   @Column({ unique: true })
-  customerId: string;
+  customerID: string;
 
   @Column({ unique: true })
   email: string;
@@ -31,10 +32,13 @@ class User extends Base {
   @Column()
   refreshToken: string;
 
+  @OneToMany(type => Transaction, transaction => transaction.user)
+  transactions: Transaction[];
+
   serialize(): SerializedUser {
     return {
       ...super.serialize(),
-      customerId: this.customerId,
+      customerID: this.customerID,
       email: this.email,
       firstName: this.firstName,
       lastName: this.lastName,

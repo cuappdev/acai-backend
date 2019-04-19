@@ -1,6 +1,7 @@
-import { Column, Entity } from 'typeorm';
-import { SerializedBase, SerializedTransaction } from '../common/types';
+import { Column, Entity, ManyToOne } from 'typeorm';
+import { SerializedTransaction } from '../common/types';
 import Base from './Base';
+import User from './User';
 
 export enum TransactionStatus {
   RECEIVED = 'received',
@@ -10,11 +11,8 @@ export enum TransactionStatus {
 
 @Entity('transactions')
 class Transaction extends Base {
-  @Column()
-  customerId: string;
-
   @Column({ unique: true })
-  orderId: string;
+  orderID: string;
 
   @Column({
     type: 'enum',
@@ -26,9 +24,13 @@ class Transaction extends Base {
   @Column({ type: 'numeric', precision: 5, scale: 2 })
   total: number;
 
+  @ManyToOne(type => User, user => user.transactions)
+  user: User;
+
   serialize(): SerializedTransaction {
     return {
       ...super.serialize(),
+      orderID: this.orderID,
       status: this.status,
       total: this.total,
     };

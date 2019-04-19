@@ -1,49 +1,42 @@
 import { validate } from 'email-validator';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import moment from 'moment';
-import squareConnect from 'square-connect';
 import { getConnectionManager, Repository } from 'typeorm';
 
+import squareAPI from '../common/squareAPI';
 import { Session } from '../common/types';
 import utils from '../common/utils';
+import Transaction from '../entities/Transaction';
 import User from '../entities/User';
 
 const db = (): Repository<User> => getConnectionManager().get().getRepository(User);
-const customersAPI = new squareConnect.CustomersApi();
-const defaultClient = squareConnect.ApiClient.instance;
-const oauth2 = defaultClient.authentications['oauth2'];
-oauth2.accessToken = process.env.ACCESS_TOKEN;
 
-type CreateUserFields = {
+const createUser = async (
   email: string,
   password: string,
   firstName: string,
   lastName: string,
-  phoneNumber: string,
-};
-
-const createUser = async (fields: CreateUserFields): Promise<User> => {
+  phoneNumberString: string,
+): Promise<User> => {
   try {
-    const { email, password, firstName, lastName } = fields;
-    const parsedPhoneNumber = parsePhoneNumberFromString(fields.phoneNumber, 'US');
+    const phoneNumberObj = parsePhoneNumberFromString(phoneNumberString, 'US');
     if (!(email && password && firstName && lastName
-          && parsedPhoneNumber.isValid() && validate(email))) {
+      && phoneNumberObj.isValid() && validate(email))) {
       throw Error();
     }
-    const phoneNumber = parsedPhoneNumber.formatNational();
-    const customer = await customersAPI.createCustomer({
-      idempotency_key: utils.generateToken(),
-      email_address: email,
-      family_name: lastName,
-      given_name: firstName,
-      phone_number: phoneNumber,
-    });
+    const phoneNumber = phoneNumberObj.formatNational();
+    const customer = await squareAPI.createCustomer(
+      email,
+      firstName,
+      lastName,
+      phoneNumber,
+    );
     const user = db().create({
       email,
       firstName,
       lastName,
       phoneNumber,
-      customerId: customer.customer.id,
+      customerID: customer.customer.id,
       passwordHash: utils.generateHash(password),
       ...utils.createSession(),
     });
@@ -85,6 +78,14 @@ const getUserBySessionToken = async (sessionToken: string): Promise<User> => {
   }
 };
 
+const getTransactionsById = async (id: string): Promise<Transaction[]> => {
+  const user = await db().findOne({
+    where: { id },
+    relations: ['transactions'],
+  });
+  return user.transactions;
+};
+
 const refreshSession = async (refreshToken: string): Promise<Session> => {
   try {
     const session = utils.createSession();
@@ -104,5 +105,6 @@ export default {
   getUserById,
   getUserByCredentials,
   getUserBySessionToken,
+  getTransactionsById,
   refreshSession,
 };

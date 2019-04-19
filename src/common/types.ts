@@ -5,12 +5,13 @@ export type SerializedBase = {
 };
 
 export type SerializedTransaction = SerializedBase & {
+  orderID: string,
   status: string,
   total: number,
 };
 
 export type SerializedUser = SerializedBase & {
-  customerId: string,
+  customerID: string,
   email: string,
   firstName: string,
   lastName: string,
