@@ -39,16 +39,39 @@
           {
             "in": "body",
             "name": "body",
-            "description": "Create user object",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/User"
+              "type": "object",
+              "required": [
+                "email",
+                "password",
+                "firstName",
+                "lastName",
+                "phoneNumber"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "phoneNumber": {
+                  "type": "string"
+                }
+              }
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "{success: true}"
+            "description": "{success: true, data: [User]}"
           }
         }
       }
@@ -62,20 +85,9 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Get menu object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Menu"
-            }
-          }
-        ],
         "responses": {
           "200": {
-            "description": "{success: true}"
+            "description": "{success: true, data: [Menu]}"
           }
         }
       }
@@ -89,23 +101,17 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Get order history",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/OrderHistory"
-            }
-          }
-        ],
         "responses": {
           "200": {
-            "description": "{success: true}"
+            "description": "{success: true, data: [OrderHistory]}"
           }
         }
-      }
+      },
+      "security": [
+        {
+          "Bearer": []
+        }
+      ]
     },
     "/placeOrder": {
       "post": {
@@ -116,23 +122,24 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Place order",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Order"
-            }
-          }
-        ],
         "responses": {
           "200": {
-            "description": "{success: true}"
+            "description": "{success: true, data: [Order]}"
           }
         }
       }
+    },
+    "security": [
+      {
+        "Bearer": []
+      }
+    ]
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
     }
   },
   "definitions": {
