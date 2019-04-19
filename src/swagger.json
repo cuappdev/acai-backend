@@ -106,7 +106,12 @@
             "description": "{success: true, data: [OrderHistory]}"
           }
         }
-      }
+      },
+      "security": [
+        {
+          "Bearer": []
+        }
+      ]
     },
     "/placeOrder": {
       "post": {
@@ -123,6 +128,18 @@
           }
         }
       }
+    },
+    "security": [
+      {
+        "Bearer": []
+      }
+    ]
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
     }
   },
   "definitions": {
