@@ -1,4 +1,4 @@
-import squareConnect, { CreateCustomerResponse } from 'square-connect';
+import squareConnect, { CreateCustomerResponse, ListCatalogResponse } from 'square-connect';
 import utils from '../common/utils';
 
 const customersAPI = new squareConnect.CustomersApi();
@@ -26,6 +26,17 @@ const createCustomer = async (
   }
 };
 
+const catalogAPI = new squareConnect.CatalogApi();
+const fetchCatalog = async (): Promise<ListCatalogResponse> => {
+  try {
+    const request = squareConnect.ListCatalogRequest();
+    return catalogAPI.listCatalog(request);
+  } catch (e) {
+    throw Error('Unable to fetch catalog');
+  }
+}
+
 export default {
   createCustomer,
+  fetchCatalog,
 };
