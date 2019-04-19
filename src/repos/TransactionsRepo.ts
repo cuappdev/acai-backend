@@ -9,9 +9,17 @@ type CreateTransactionFields = {
   total: number,
 };
 
-const createTransaction = async (fields: CreateTransactionFields): Promise<Transaction> => {
+const createTransaction = async (
+  customerId: string,
+  orderId: string,
+  total: number,
+): Promise<Transaction> => {
   try {
-    const transaction = db().create(fields);
+    const transaction = db().create({
+      customerId,
+      orderId,
+      total,
+    });
     await db().save(transaction);
     return transaction;
   } catch (e) {
