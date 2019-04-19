@@ -15,13 +15,14 @@ class RegisterRouter extends ApplicationRouter<SerializedUser> {
 
   async content(req: Request): Promise<SerializedUser> {
     const { email, password, firstName, lastName, phoneNumber } = req.body;
-    return (await UsersRepo.createUser({
+    const user = await UsersRepo.createUser(
       email,
       password,
       firstName,
       lastName,
       phoneNumber,
-    })).serialize();
+    );
+    return user.serialize();
   }
 }
 
