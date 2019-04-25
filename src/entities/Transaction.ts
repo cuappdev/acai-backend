@@ -11,10 +11,10 @@ export enum TransactionStatus {
 @Entity('transactions')
 class Transaction extends Base {
   @Column()
-  customerId: string;
+  customerID: string;
 
   @Column({ unique: true })
-  orderId: string;
+  orderID: string;
 
   @Column({
     type: 'enum',
@@ -29,6 +29,7 @@ class Transaction extends Base {
   serialize(): SerializedTransaction {
     return {
       ...super.serialize(),
+      orderID: this.orderID,
       status: this.status,
       total: this.total,
     };

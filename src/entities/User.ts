@@ -5,7 +5,7 @@ import Base from './Base';
 @Entity('users')
 class User extends Base {
   @Column({ unique: true })
-  customerId: string;
+  customerID: string;
 
   @Column({ unique: true })
   email: string;
@@ -34,7 +34,7 @@ class User extends Base {
   serialize(): SerializedUser {
     return {
       ...super.serialize(),
-      customerId: this.customerId,
+      customerID: this.customerID,
       email: this.email,
       firstName: this.firstName,
       lastName: this.lastName,

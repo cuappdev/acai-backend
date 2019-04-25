@@ -3,7 +3,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import moment from 'moment';
 import { getConnectionManager, Repository } from 'typeorm';
 
-import squareAPI from '../common/squareAPI';
+import SquareAPI from '../common/SquareAPI';
 import { Session } from '../common/types';
 import utils from '../common/utils';
 import User from '../entities/User';
@@ -24,7 +24,7 @@ const createUser = async (
       throw Error();
     }
     const phoneNumber = phoneNumberObj.formatNational();
-    const customer = await squareAPI.createCustomer(
+    const customer = await SquareAPI.createCustomer(
       email,
       firstName,
       lastName,
@@ -35,7 +35,7 @@ const createUser = async (
       firstName,
       lastName,
       phoneNumber,
-      customerId: customer.customer.id,
+      customerID: customer.customer.id,
       passwordHash: utils.generateHash(password),
       ...utils.createSession(),
     });
@@ -46,7 +46,7 @@ const createUser = async (
   }
 };
 
-const getUserById = async (id: string): Promise<User> => {
+const getUserByID = async (id: string): Promise<User> => {
   try {
     return db().findOne({ id });
   } catch (e) {
@@ -93,7 +93,7 @@ const refreshSession = async (refreshToken: string): Promise<Session> => {
 
 export default {
   createUser,
-  getUserById,
+  getUserByID,
   getUserByCredentials,
   getUserBySessionToken,
   refreshSession,

@@ -1,6 +1,7 @@
 import { Request } from 'express';
 
 import ApplicationRouter from '../appdev/ApplicationRouter';
+import SquareAPI from '../common/SquareAPI';
 import utils from '../common/utils';
 
 class CatalogRouter extends ApplicationRouter<any> {
@@ -13,7 +14,8 @@ class CatalogRouter extends ApplicationRouter<any> {
   }
 
   async content(req: Request): Promise<Object> {
-    return utils.parseCatalog();
+    const catalog = await SquareAPI.fetchCatalog();
+    return utils.parseCatalog(catalog);
   }
 }
 
