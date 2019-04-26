@@ -1,4 +1,3 @@
-// @flow
 import { Connection, ConnectionOptions, createConnection } from 'typeorm';
 
 import Transaction from '../entities/Transaction';
@@ -15,7 +14,7 @@ const connectionOptions: ConnectionOptions = {
   entities,
   type: 'postgres',
   host: process.env.DB_HOST,
-  port: isProduction ? Number(process.env.DB_PORT) : 5432,
+  port: isProduction ? +process.env.DB_PORT : 5432,
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,

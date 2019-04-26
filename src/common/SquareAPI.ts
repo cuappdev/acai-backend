@@ -1,4 +1,5 @@
 import squareConnect, {
+  BatchRetrieveOrdersResponse,
   ChargeResponse,
   CreateCustomerCardResponse,
   CreateCustomerResponse,
@@ -20,9 +21,6 @@ const defaultClient = squareConnect.ApiClient.instance;
 const oauth2 = defaultClient.authentications['oauth2'];
 oauth2.accessToken = process.env.ACCESS_TOKEN;
 const locationID = process.env.LOCATION_ID;
-
-const fetchCatalog = async (): Promise<ListCatalogResponse> =>
-  catalogAPI.listCatalog(new squareConnect.ListCatalogRequest());
 
 const createCustomer = async (
   email: string,
@@ -53,7 +51,7 @@ const createCustomerCard = async (
 const createOrderFromInput = (items: ItemInput[], taxes: string[]): Order => {
   const order = new squareConnect.Order();
   order.location_id = locationID;
-  order.line_items = items.map(({id, quantity, modifiers}) => {
+  order.line_items = items.map(({ id, quantity, modifiers }) => {
     const lineItem = new squareConnect.OrderLineItem();
     lineItem.catalog_object_id = id;
     lineItem.quantity = quantity;
@@ -116,6 +114,19 @@ const chargeSavedCard = async (
   return transactionsAPI.charge(locationID, request);
 };
 
+const fetchCatalog = async (): Promise<ListCatalogResponse> =>
+  catalogAPI.listCatalog(new squareConnect.ListCatalogRequest());
+
+const fetchOrders = async (orderIDs: string[]): Promise<BatchRetrieveOrdersResponse> => {
+  try {
+    const body = new squareConnect.BatchRetrieveOrdersRequest();
+    body.order_ids = orderIDs;
+    return ordersAPI.batchRetrieveOrders(locationID, body);
+  } catch (e) {
+    throw Error('Unable to retrieve order history');
+  }
+};
+
 export default {
   chargeNewCard,
   chargeSavedCard,
@@ -123,4 +134,5 @@ export default {
   createCustomerCard,
   createOrder,
   fetchCatalog,
+  fetchOrders,
 };

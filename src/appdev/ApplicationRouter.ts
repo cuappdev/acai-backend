@@ -9,7 +9,7 @@ export type RequestType = 'GET' | 'POST' | 'DELETE';
  * ExpressHandlerFunction - the function signature of callbacks for Express
  * Router objects
  */
-export type ExpressCallback = (Request, Response, NextFunction) => any;
+export type ExpressCallback = (req: Request, res: Response, next: NextFunction) => any;
 
 /**
  * AppDevResponse - the response from an HTTP request

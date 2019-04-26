@@ -6,6 +6,7 @@ import { getConnectionManager, Repository } from 'typeorm';
 import SquareAPI from '../common/SquareAPI';
 import { Session } from '../common/types';
 import utils from '../common/utils';
+import Transaction from '../entities/Transaction';
 import User from '../entities/User';
 
 const db = (): Repository<User> => getConnectionManager().get().getRepository(User);
@@ -20,7 +21,7 @@ const createUser = async (
   try {
     const phoneNumberObj = parsePhoneNumberFromString(phoneNumberString, 'US');
     if (!(email && password && firstName && lastName
-          && phoneNumberObj.isValid() && validate(email))) {
+      && phoneNumberObj.isValid() && validate(email))) {
       throw Error();
     }
     const phoneNumber = phoneNumberObj.formatNational();
@@ -77,6 +78,14 @@ const getUserBySessionToken = async (sessionToken: string): Promise<User> => {
   }
 };
 
+const getTransactionsById = async (id: string): Promise<Transaction[]> => {
+  const user = await db().findOne({
+    where: { id },
+    relations: ['transactions'],
+  });
+  return user.transactions;
+};
+
 const refreshSession = async (refreshToken: string): Promise<Session> => {
   try {
     const session = utils.createSession();
@@ -96,5 +105,6 @@ export default {
   getUserByID,
   getUserByCredentials,
   getUserBySessionToken,
+  getTransactionsById,
   refreshSession,
 };

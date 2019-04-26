@@ -158,6 +158,14 @@ declare module 'square-connect' {
     modifier_data?: CatalogModifier;
   }
 
+  class BatchRetrieveOrdersRequest {
+    order_ids: string[];
+  }
+
+  class BatchRetrieveOrdersResponse extends Response {
+    orders?: Order[];
+  }
+
   class CreateCustomerRequest extends Request {
     given_name: string;
     family_name: string;
@@ -215,6 +223,10 @@ declare module 'square-connect' {
 
   class OrdersApi {
     createOrder(locationID: string, req: CreateOrderRequest): CreateOrderResponse;
+    batchRetrieveOrders(
+      locationID: string,
+      req: BatchRetrieveOrdersRequest,
+    ): BatchRetrieveOrdersResponse;
   }
 
   class TransactionsApi {

@@ -1,4 +1,3 @@
-// @flow
 import { Request } from 'express';
 import * as swaggerUI from 'swagger-ui-express';
 import ApplicationRouter, { ExpressCallback } from '../appdev/ApplicationRouter';
@@ -17,7 +16,6 @@ class DocsRouter extends ApplicationRouter<any> {
     return [swaggerUI.serve, swaggerUI.setup(swaggerDocument)];
   }
 
-  // eslint-disable-next-line require-await
   async content(req: Request): Promise<Object> {
     return null;
   }

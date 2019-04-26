@@ -75,13 +75,17 @@ const parseVariations = (variations: CatalogObject[]): ItemVariationsOutput => {
 
 const parseItem = (
   { name, description, variations, modifier_list_info, tax_ids }: CatalogItem,
-): ItemOutput => ({
-  name,
-  description,
-  tax_ids,
-  variations: parseVariations(variations),
-  modifier_list_ids: modifier_list_info.map(parseModifierListInfo),
-});
+): ItemOutput => {
+  if (modifier_list_info) {
+    return {
+      name,
+      description,
+      tax_ids,
+      variations: parseVariations(variations),
+      modifier_list_ids: modifier_list_info.map(parseModifierListInfo),
+    };
+  }
+};
 
 const parseTax = (tax: CatalogTax): TaxOutput => ({
   name: tax.name,
@@ -105,8 +109,6 @@ const parseCatalog = ({ objects }: ListCatalogResponse): CatalogOutput => {
           break;
         case TAX:
           catalog.taxes[id] = parseTax(tax_data);
-          break;
-        default:
           break;
       }
     },
