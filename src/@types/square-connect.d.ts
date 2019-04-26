@@ -223,7 +223,10 @@ declare module 'square-connect' {
 
   class OrdersApi {
     createOrder(locationID: string, req: CreateOrderRequest): CreateOrderResponse;
-    batchRetrieveOrders(locationID: string, req: BatchRetrieveOrdersRequest): BatchRetrieveOrdersResponse;
+    batchRetrieveOrders(
+      locationID: string,
+      req: BatchRetrieveOrdersRequest,
+    ): BatchRetrieveOrdersResponse;
   }
 
   class TransactionsApi {
