@@ -11,6 +11,9 @@ export enum TransactionStatus {
 
 @Entity('transactions')
 class Transaction extends Base {
+  @Column()
+  customerID: string;
+
   @Column({ unique: true })
   orderID: string;
 

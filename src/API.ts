@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import { Router } from 'express';
 import ApplicationAPI from './appdev/ApplicationAPI';
 import CatalogRouter from './routers/CatalogRouter';
+import CreateOrderRouter from './routers/CreateOrderRouter';
 import DocsRouter from './routers/DocsRouter';
 import LoginRouter from './routers/LoginRouter';
 import OrderHistoryRouter from './routers/OrderHistoryRouter';
@@ -25,6 +26,7 @@ class API extends ApplicationAPI {
       docs: [DocsRouter],
       v1: [
         CatalogRouter,
+        CreateOrderRouter,
         LoginRouter,
         OrderHistoryRouter,
         RefreshRouter,

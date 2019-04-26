@@ -1,9 +1,23 @@
 import { createHash, randomBytes } from 'crypto';
 import moment from 'moment';
-import { CatalogObject, ListCatalogResponse } from 'square-connect';
+import {
+  CatalogItem,
+  CatalogItemModifierListInfo,
+  CatalogModifierList,
+  CatalogObject,
+  CatalogTax,
+  ListCatalogResponse,
+} from 'square-connect';
 
-import squareAPI from '../common/squareAPI';
-import { Session } from '../common/types';
+import {
+  CatalogOutput,
+  ItemOutput,
+  ItemVariationsOutput,
+  ModifierListOutput,
+  ModifiersOutput,
+  Session,
+  TaxOutput,
+} from '../common/types';
 
 const ITEM = 'ITEM';
 const MODIFIER_LIST = 'MODIFIER_LIST';
@@ -28,95 +42,77 @@ const generateHash = (input: string) =>
 
 const generateToken = () => randomBytes(24).toString('hex');
 
-const parseVariations = (variations) => {
+const parseModifers = (modifiers: CatalogObject[]): ModifiersOutput => {
+  const parsedModifiers = {};
+  modifiers.forEach(({ id, modifier_data }) => {
+    parsedModifiers[id] = {
+      name: modifier_data.name,
+      price: modifier_data.price_money.amount,
+    };
+  });
+  return parsedModifiers;
+};
+
+const parseModifierList = ({ name, modifiers }: CatalogModifierList): ModifierListOutput => ({
+  name,
+  modifiers: parseModifers(modifiers),
+});
+
+const parseModifierListInfo = ({ modifier_list_id }: CatalogItemModifierListInfo): string =>
+  modifier_list_id;
+
+const parseVariations = (variations: CatalogObject[]): ItemVariationsOutput => {
   const parsedVariations = {};
-  variations.forEach((variation) => {
-    parsedVariations[variation.id] = {
-      name: variation.item_variation_data.name,
-      price: variation.item_variation_data.price_money.amount,
+  variations.forEach(({ id, item_variation_data }) => {
+    parsedVariations[id] = {
+      name: item_variation_data.name,
+      price: item_variation_data.price_money.amount,
     };
   });
 
   return parsedVariations;
 };
 
-const parseModifierListIDs = (modifierLists) => {
-  const parsedModifierLists = [];
-  if (modifierLists) {
-    modifierLists.forEach((modifierList) => {
-      parsedModifierLists.push(modifierList.modifier_list_id);
-    });
-  }
-  return parsedModifierLists;
-};
-
-const parseModifierIDs = (modifiers) => {
-  const parsedModifierIDs = [];
-  if (modifiers) {
-    modifiers.forEach((modifier) => {
-      parsedModifierIDs.push(modifier.id);
-    });
-  }
-  return parsedModifierIDs;
-};
-
-const parseModifers = (modifiers) => {
-  const parsedModifiers = {};
-  modifiers.forEach((modifier) => {
-    parsedModifiers[modifier.id] = {
-      name: modifier.modifier_data.name,
-      price: modifier.modifier_data.price_money.amount,
+const parseItem = (
+  { name, description, variations, modifier_list_info, tax_ids }: CatalogItem,
+): ItemOutput => {
+  if (modifier_list_info) {
+    return {
+      name,
+      description,
+      tax_ids,
+      variations: parseVariations(variations),
+      modifier_list_ids: modifier_list_info.map(parseModifierListInfo),
     };
-  });
-  return parsedModifiers;
+  }
 };
 
-const parseModifierList = (modifierList): Object => ({
-  name: modifierList.name,
-  modifier_ids: parseModifierIDs(modifierList.modifiers),
-  modifiers: parseModifers(modifierList.modifiers),
-});
-
-const parseItem = (item): Object => ({
-  name: item.name,
-  description: item.description,
-  variations: parseVariations(item.variations),
-  modifier_lists: parseModifierListIDs(item.modifier_list_info),
-  tax_ids: item.tax_ids,
-});
-
-const parseTax = (tax): Object => ({
+const parseTax = (tax: CatalogTax): TaxOutput => ({
   name: tax.name,
   percentage: tax.percentage,
 });
 
-const parseCatalog = async (): Promise<Object> => {
-  const data: ListCatalogResponse = await squareAPI.fetchCatalog();
+const parseCatalog = ({ objects }: ListCatalogResponse): CatalogOutput => {
   const catalog = {
     items: {},
     modifier_lists: {},
     taxes: {},
   };
-
-  data['objects'].forEach((object) => {
-    switch (object.type) {
-      case ITEM: {
-        catalog.items[object.id] = parseItem(object.item_data);
-        break;
+  objects.forEach(
+    ({ 'type': objType, id, item_data, modifier_list_data, tax_data }: CatalogObject) => {
+      switch (objType) {
+        case ITEM:
+          catalog.items[id] = parseItem(item_data);
+          break;
+        case MODIFIER_LIST:
+          catalog.modifier_lists[id] = parseModifierList(modifier_list_data);
+          break;
+        case TAX:
+          catalog.taxes[id] = parseTax(tax_data);
+          break;
       }
-      case MODIFIER_LIST: {
-        catalog.modifier_lists[object.id] = parseModifierList(object.modifier_list_data);
-        break;
-      }
-      case TAX: {
-        catalog.taxes[object.id] = parseTax(object.tax_data);
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  });
+    },
+  );
   return catalog;
 };
 
