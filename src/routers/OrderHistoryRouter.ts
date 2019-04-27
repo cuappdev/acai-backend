@@ -2,7 +2,7 @@ import { Request } from 'express';
 import UsersRepo from '../repos/UsersRepo';
 
 import ApplicationRouter from '../appdev/ApplicationRouter';
-import squareAPI from '../common/squareAPI';
+import SquareAPI from '../common/SquareAPI';
 import utils from '../common/utils';
 
 class OrderHistoryRouter extends ApplicationRouter<any> {
@@ -22,7 +22,7 @@ class OrderHistoryRouter extends ApplicationRouter<any> {
       (ids, transaction) => ids.concat([transaction.orderID]),
       [],
     );
-    const orders = (await squareAPI.fetchOrders(orderIDs)).orders;
+    const orders = (await SquareAPI.fetchOrders(orderIDs)).orders;
     return { orders };
   }
 }
