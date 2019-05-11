@@ -5,7 +5,7 @@ import Transaction from '../entities/Transaction';
 
 const db = (): Repository<Transaction> => getConnectionManager().get().getRepository(Transaction);
 
-const createDbTransaction = async (
+const createDBTransaction = async (
   customerID: string,
   orderID: string,
   total: number,
@@ -27,12 +27,23 @@ const createTransactionNewCard = async (
 ): Promise<Transaction> => {
   try {
     await SquareAPI.chargeNewCard(customerID, cardNonce, orderID, total);
-    return createDbTransaction(customerID, orderID, total);
+    return createDBTransaction(customerID, orderID, total);
   } catch (e) {
     throw Error('Unable to create transaction');
   }
 };
 
+const deleteTransactionByID = async (id: string) => {
+  try {
+    const transaction = await db().findOne({ id });
+    await db().remove(transaction);
+  } catch (e) {
+    throw Error('Unable to delete transaction');
+  }
+};
+
 export default {
+  createDBTransaction,
   createTransactionNewCard,
+  deleteTransactionByID,
 };

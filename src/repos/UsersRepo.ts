@@ -47,6 +47,15 @@ const createUser = async (
   }
 };
 
+const deleteUserByID = async (id: string) => {
+  try {
+    const user = await db().findOne({ id });
+    await db().remove(user);
+  } catch (e) {
+    throw Error('Unable to delete user');
+  }
+};
+
 const getUserByID = async (id: string): Promise<User> => {
   try {
     return db().findOne({ id });
@@ -102,6 +111,7 @@ const refreshSession = async (refreshToken: string): Promise<Session> => {
 
 export default {
   createUser,
+  deleteUserByID,
   getUserByID,
   getUserByCredentials,
   getUserBySessionToken,
