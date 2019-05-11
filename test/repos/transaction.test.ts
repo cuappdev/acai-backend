@@ -15,7 +15,7 @@ beforeAll(async () => {
     process.exit();
   });
   user = await UsersRepo.createUser('test@gmail.com', 'password', 'First', 'Last',
-                                    '(714) 381-9843');
+                                    '(213) 373-4253');
 });
 
 test('Create Transaction', async () => {

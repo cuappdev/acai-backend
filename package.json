@@ -6,9 +6,8 @@
   "scripts": {
     "start:prod": "node_modules/.bin/ts-node src/server.ts",
     "start:dev": "node_modules/.bin/ts-node-dev src/server.ts",
-    "sandbox": "node_modules/.bin/ts-node src/index.ts",
     "build": "node_modules/.bin/tsc",
-    "test": "node_modules/.bin/ts-node ./node_modules/.bin/jest --verbose --forceExit --detectOpenHandles test ; echo 'Exiting.'"
+    "test": "node_modules/.bin/ts-node ./node_modules/.bin/jest --verbose --forceExit --detectOpenHandles test"
   },
   "repository": {
     "type": "git",
