@@ -39,16 +39,10 @@ psql acai
 ```
 
 ### Environment Variables:
-It is recommended to use [`autoenv`](https://github.com/kennethreitz/autoenv). The required environment variables for this API are the following:
+It is recommended to use [`direnv`](https://direnv.net). To set up, run the following:
+
 ```bash
-export PORT=8000
-export ACCESS_TOKEN=FILL_IN
-export DB_USERNAME=FILL_IN
-export DB_PASSWORD=FILL_IN
-export DB_HOST=localhost
-export DB_NAME=acai
-export DB_PORT=5432
-export NODE_ENV=development
+cp envrc.template .envrc
 ```
 
 ## Configuration (optional)
