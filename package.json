@@ -22,7 +22,7 @@
     "create-file-webpack": "^1.0.0",
     "jest": "^24.1.0",
     "supertest": "^3.3.0",
-    "ts-node-dev": "^1.0.0-pre.32",
+    "ts-node-dev": "^1.0.0-pre.42",
     "tslint": "^5.12.1",
     "tslint-config-airbnb": "^5.11.1",
     "webpack": "^4.22.0",
