@@ -49,7 +49,7 @@
     "square-connect": "^2.20190213.0",
     "swagger-ui-express": "^4.0.2",
     "ts-node": "3.3.0",
-    "typeorm": "0.2.14",
+    "typeorm": "0.2.25",
     "typescript": "^3.3.3"
   }
 }
